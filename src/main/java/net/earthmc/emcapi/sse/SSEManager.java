@@ -5,6 +5,8 @@ import io.javalin.config.RoutesConfig;
 import io.javalin.http.Context;
 import io.javalin.http.sse.SseClient;
 import net.earthmc.emcapi.EMCAPI;
+import net.earthmc.emcapi.object.optout.AuthSettings;
+import net.earthmc.emcapi.manager.Authorisation;
 import net.earthmc.emcapi.manager.KeyManager;
 import net.earthmc.emcapi.util.JSONUtil;
 import org.jetbrains.annotations.Nullable;
@@ -165,6 +167,23 @@ public class SSEManager {
                 clientData.client.sendEvent(event, message);
             }
         });
+    }
+
+    public void sendAuthorizedEvent(String event, JsonObject data, UUID targetPlayerId, AuthSettings.Type type) {
+        sendEvent(event, data, targetPlayerId);
+
+        Authorisation auth = plugin.getAuth();
+
+        var settings = auth.getAuthSettings(targetPlayerId);
+        if (settings == null) {
+            return;
+        }
+
+        var authorizedUUIDs = settings.getAuthorizedForType(type);
+
+        for (UUID uuid: authorizedUUIDs) {
+            sendEvent(event, data, uuid);
+        }
     }
 
     public static void deleteKey(String key) {
