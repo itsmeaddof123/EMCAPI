@@ -38,10 +38,10 @@ public class ShopSSEListener extends AbstractSSEListener {
         saleMessage.addProperty("amount", event.getAmount());
         if (isSelling) {
             saleMessage.addProperty("buyer", purchaser);
-            sse.sendAuthorizedEvent("ShopSoldItem", saleMessage, owner, AuthSettings.Type.SHOP_SSE)
+            sse.sendAuthorizedEvent("ShopSoldItem", saleMessage, owner, AuthSettings.Type.SHOP_SSE);
         } else {
             saleMessage.addProperty("seller", purchaser);
-            sse.sendAuthorizedEvent("ShopBoughtItem", saleMessage, owner, AuthSettings.Type.SHOP_SSE)
+            sse.sendAuthorizedEvent("ShopBoughtItem", saleMessage, owner, AuthSettings.Type.SHOP_SSE);
         }
 
         checkOwnerBalance(owner);
@@ -66,7 +66,7 @@ public class ShopSSEListener extends AbstractSSEListener {
 
         JsonObject message = new JsonObject();
         message.add("shop", EndpointUtils.getShopObject(shop));
-        sse.sendAuthorizedEvent("ShopCreated", message, owner, AuthSettings.Type.SHOP_SSE)
+        sse.sendAuthorizedEvent("ShopCreated", message, owner, AuthSettings.Type.SHOP_SSE);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -83,14 +83,14 @@ public class ShopSSEListener extends AbstractSSEListener {
 
         JsonObject message = new JsonObject();
         message.add("shop", EndpointUtils.getShopObject(shop));
-        sse.sendAuthorizedEvent("ShopDeleted", message, owner, AuthSettings.Type.SHOP_SSE)
+        sse.sendAuthorizedEvent("ShopDeleted", message, owner, AuthSettings.Type.SHOP_SSE);
     }
 
     private void checkOwnerBalance(UUID owner) {
         Resident res = TownyAPI.getInstance().getResident(owner);
         if (res == null || res.getAccount().getHoldingBalance() > 0) return;
 
-        sse.sendAuthorizedEvent("ShopOutOfGold", new JsonObject(), owner, AuthSettings.Type.SHOP_SSE)
+        sse.sendAuthorizedEvent("ShopOutOfGold", new JsonObject(), owner, AuthSettings.Type.SHOP_SSE);
     }
 
     private void checkShopOut(Shop shop) {
@@ -101,7 +101,7 @@ public class ShopSSEListener extends AbstractSSEListener {
         JsonObject alertMessage = new JsonObject();
         alertMessage.addProperty("action", isSelling ? "out_of_stock" : "out_of_space");
         alertMessage.add("shop", EndpointUtils.getShopObject(shop));
-        sse.sendAuthorizedEvent("ShopOutOf" + (isSelling ? "Stock" : "Space"), alertMessage, shop.getOwner(), AuthSettings.Type.SHOP_SSE)
+        sse.sendAuthorizedEvent("ShopOutOf" + (isSelling ? "Stock" : "Space"), alertMessage, shop.getOwner(), AuthSettings.Type.SHOP_SSE);
     }
 
     private String getPlayerName(QUser user) {
