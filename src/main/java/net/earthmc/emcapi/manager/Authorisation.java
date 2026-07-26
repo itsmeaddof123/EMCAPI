@@ -30,6 +30,10 @@ public class Authorisation {
         return authMap.containsKey(owner) && authMap.get(owner).authorize(type, target);
     }
 
+    public AuthSettings getAuthSettings(UUID owner) {
+        return authMap.get(owner) // This is safe because ConcurrentHashMap will return null if there authMap.containsKey(owner) is false
+    }
+
     public void saveAuthSettings(UUID uuid) {
         AuthSettings settings = authMap.get(uuid);
         if (settings == null) {
