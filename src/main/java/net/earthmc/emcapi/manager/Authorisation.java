@@ -49,16 +49,18 @@ public class Authorisation {
             boolean delete = settings.isRedundant();
             try (Connection connection = plugin.getDatabase().getConnection();
                  PreparedStatement ps = connection.prepareStatement(delete ? "DELETE FROM authorised WHERE uuid = ?"
-                     : "INSERT INTO authorised (uuid, shop_sse, shop_query) " +
+                     : "INSERT INTO authorised (uuid, shop_sse, shop_query, res_query) " +
                      "VALUES (?, ?, ?) " +
                      "ON DUPLICATE KEY UPDATE " +
                      "shop_sse = VALUES(shop_sse), " +
-                     "shop_query = VALUES(shop_query)"
+                     "shop_query = VALUES(shop_query)" + 
+                     "res_query = VALUES(res_query)"
                  )) {
                 ps.setString(1, uuid.toString());
                 if (!delete) {
                     ps.setString(2, settings.getStringForType(AuthSettings.Type.SHOP_SSE));
                     ps.setString(3, settings.getStringForType(AuthSettings.Type.SHOP_QUERY));
+                    ps.setString(3, settings.getStringForType(AuthSettings.Type.RES_QUERY));
                 }
 
                 ps.executeUpdate();
@@ -79,6 +81,7 @@ public class Authorisation {
                     Map<AuthSettings.Type, String> map = Map.of(
                         AuthSettings.Type.SHOP_SSE, Objects.requireNonNullElse(rs.getString("shop_sse"), ""),
                         AuthSettings.Type.SHOP_QUERY, Objects.requireNonNullElse(rs.getString("shop_query"), "")
+                        AuthSettings.Type.RES_QUERY, Objects.requireNonNullElse(rs.getString("res_query"), "")
                     );
 
                     AuthSettings settings = AuthSettings.parse(map);
