@@ -49,6 +49,7 @@ public class PlayersEndpoint extends PostEndpoint<Resident> {
         }
 
         if (resident != null && plugin.getOptOut().playerOptedOut(resident.getUUID(), OptOutType.TOWNY_RESIDENT)) {
+            UUID keyOwner = KeyManager.getKeyOwner(key);
             if (!resident.getUUID().equals(keyOwner) && !plugin.getAuth().authorize(resident, AuthSettings.Type.TOWNY_QUERY, keyOwner)) {
                 return null;
             }
