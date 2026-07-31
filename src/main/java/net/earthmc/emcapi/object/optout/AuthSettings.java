@@ -17,7 +17,8 @@ public record AuthSettings(Map<Type, Set<UUID>> authorised) {
         AuthSettings settings = new AuthSettings(new HashMap<>());
         for (Map.Entry<Type, String> entry : map.entrySet()) {
             Set<UUID> uuids = parseUUIDs(entry.getValue());
-            if (uuids.isEmpty()) continue;
+            if (uuids.isEmpty())
+                continue;
             settings.authorised.put(entry.getKey(), uuids);
         }
 
@@ -29,7 +30,8 @@ public record AuthSettings(Map<Type, Set<UUID>> authorised) {
         for (String str : string.split(",")) {
             try {
                 uuids.add(UUID.fromString(str));
-            } catch (IllegalArgumentException ignored) {}
+            } catch (IllegalArgumentException ignored) {
+            }
         }
         return uuids;
     }
@@ -67,9 +69,11 @@ public record AuthSettings(Map<Type, Set<UUID>> authorised) {
     public Set<UUID> getAuthorizedForType(Type type) {
         return authorised.getOrDefault(type, Set.of());
     }
-    
+
     public String getStringForType(Type type) {
-        return authorised.containsKey(type) ? authorised.get(type).stream().map(UUID::toString).collect(Collectors.joining(",")) : "";
+        return authorised.containsKey(type)
+                ? authorised.get(type).stream().map(UUID::toString).collect(Collectors.joining(","))
+                : "";
     }
 
     public enum Type {
