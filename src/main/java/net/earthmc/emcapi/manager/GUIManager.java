@@ -205,17 +205,27 @@ public class GUIManager implements Listener {
             .mutateItem(item -> item.setData(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplay.tooltipDisplay().addHiddenComponents(DataComponentTypes.INSTRUMENT).build()))
             .build();
 
-        MenuItem query = MenuItem.builder(Material.BARREL)
+        MenuItem shop_query = MenuItem.builder(Material.BARREL)
             .name(Component.text("Shop Query", NamedTextColor.DARK_GREEN, TextDecoration.BOLD))
             .lore(Component.text("• Players authorised here will be able to query all your shops in the /shop endpoint", NamedTextColor.DARK_GREEN))
             .lore(Component.text("• This bypasses your shop data not being public in your opt out settings", NamedTextColor.DARK_GREEN))
             .lore(Component.text("Click to add or remove players", NamedTextColor.WHITE))
             .action(ClickAction.openSilent(() -> editAuthorisedMenu(player, settings, AuthSettings.Type.SHOP_QUERY)))
+            .slot(slot(3, 4))
+            .withGlint()
+            .build();
+
+        MenuItem towny_query = MenuItem.builder(Material.PLAYER_HEAD)
+            .name(Component.text("Towny Query", NamedTextColor.DARK_AQUA, TextDecoration.BOLD))
+            .lore(Component.text("• Players authorised here will be able to query your resident data in the /players endpoint", NamedTextColor.RED))
+            .lore(Component.text("• This bypasses your resident data not being public in your opt out settings", NamedTextColor.RED))
+            .lore(Component.text("Click to add or remove players", NamedTextColor.WHITE))
+            .action(ClickAction.openSilent(() -> editAuthorisedMenu(player, settings, AuthSettings.Type.TOWNY_QUERY)))
             .slot(slot(3, 6))
             .withGlint()
             .build();
 
-        menu.addItem(main).addItem(sse).addItem(query).addItem(createMainMenuButton(player));
+        menu.addItem(main).addItem(sse).addItem(shop_query).addItem(towny_query).addItem(createMainMenuButton(player));
         return menu.build();
     }
 

@@ -12,6 +12,7 @@ import net.earthmc.emcapi.integration.Integrations;
 import net.earthmc.emcapi.manager.KeyManager;
 import net.earthmc.emcapi.object.endpoint.PostEndpoint;
 import net.earthmc.emcapi.object.optout.OptOutType;
+import net.earthmc.emcapi.object.optout.AuthSettings;
 import net.earthmc.emcapi.util.EndpointUtils;
 import net.earthmc.emcapi.util.HttpExceptions;
 import net.earthmc.emcapi.util.JSONUtil;
@@ -47,8 +48,10 @@ public class PlayersEndpoint extends PostEndpoint<Resident> {
             }
         }
 
-        if (resident != null && plugin.getOptOut().playerOptedOut(resident.getUUID(), OptOutType.TOWNY_RESIDENT) && !resident.getUUID().equals(KeyManager.getKeyOwner(key))) {
-            return null;
+        if (resident != null && plugin.getOptOut().playerOptedOut(resident.getUUID(), OptOutType.TOWNY_RESIDENT)) {
+            if (!resident.getUUID().equals(keyOwner) && !plugin.getAuth().authorize(resident, AuthSettings.Type.TOWNY_QUERY, keyOwner)) {
+                return null;
+            }
         }
 
         return resident;
