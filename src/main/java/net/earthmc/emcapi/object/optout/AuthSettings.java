@@ -75,6 +75,6 @@ public record AuthSettings(Map<Type, Set<UUID>> authorised) {
     public enum Type {
         SHOP_SSE,
         SHOP_QUERY,
-        TOWNY_QUERY
+        RES_QUERY
     }
 }

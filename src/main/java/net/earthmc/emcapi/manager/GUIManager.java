@@ -193,7 +193,7 @@ public class GUIManager implements Listener {
             .slot(slot(1, 4))
             .build();
 
-        MenuItem sse = MenuItem.builder(Material.GOAT_HORN)
+        MenuItem shop_sse = MenuItem.builder(Material.GOAT_HORN)
             .name(Component.text("Shop SSE", NamedTextColor.GREEN))
             .lore(Component.text("• Players authorised here will be able to connect to the server's /sse endpoint", NamedTextColor.GREEN))
             .lore(Component.text("• and receive events fired by your QuickShops", NamedTextColor.GREEN))
@@ -215,17 +215,17 @@ public class GUIManager implements Listener {
             .withGlint()
             .build();
 
-        MenuItem towny_query = MenuItem.builder(Material.PLAYER_HEAD)
-            .name(Component.text("Towny Query", NamedTextColor.DARK_AQUA, TextDecoration.BOLD))
+        MenuItem res_query = MenuItem.builder(Material.PLAYER_HEAD)
+            .name(Component.text("Resident Query", NamedTextColor.DARK_AQUA, TextDecoration.BOLD))
             .lore(Component.text("• Players authorised here will be able to query your resident data in the /players endpoint", NamedTextColor.RED))
             .lore(Component.text("• This bypasses your resident data not being public in your opt out settings", NamedTextColor.RED))
             .lore(Component.text("Click to add or remove players", NamedTextColor.WHITE))
-            .action(ClickAction.openSilent(() -> editAuthorisedMenu(player, settings, AuthSettings.Type.TOWNY_QUERY)))
+            .action(ClickAction.openSilent(() -> editAuthorisedMenu(player, settings, AuthSettings.Type.RES_QUERY)))
             .slot(slot(3, 6))
             .withGlint()
             .build();
 
-        menu.addItem(main).addItem(sse).addItem(shop_query).addItem(towny_query).addItem(createMainMenuButton(player));
+        menu.addItem(main).addItem(shop_sse).addItem(shop_query).addItem(res_query).addItem(createMainMenuButton(player));
         return menu.build();
     }
 
